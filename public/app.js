@@ -25,15 +25,24 @@
 // ══════════════════════════════════════════════════════════════
 
 const LIDERES = [
-  { nome:"Bruna Freitas",      email:"bruna.freitas@nubank.com.br",      step:"M1", cluster:"N2" },
-  { nome:"Bruno Ziurkelis",    email:"bruno.ziurkelis@nubank.com.br",    step:"M1", cluster:"N2" },
-  { nome:"Evandro Silva",      email:"evandro.silva@nubank.com.br",      step:"M1", cluster:"N2" },
-  { nome:"Marilena Levy",      email:"marilena.levy@nubank.com.br",      step:"M1", cluster:"N2" },
-  { nome:"Nathalia Alcantara", email:"nathalia.alcantara@nubank.com.br", step:"M1", cluster:"N2" },
-  { nome:"Rogério Lobato",     email:"rogerio.lobato@nubank.com.br",     step:"M1", cluster:"N2" },
-  { nome:"Amanda Garcia",      email:"amanda.garcia@nubank.com.br",      step:"M1", cluster:"Q&T" },
-  { nome:"Giancarlo Mendonça", email:"giancarlo.mendonca@nubank.com.br", step:"M1", cluster:"Q&T" },
-  { nome:"Mariana Foffa",      email:"mariana.foffa@nubank.com.br",      step:"M2", cluster:"Melhoria Contínua" },
+  // M2
+  { nome:"Ana Claudia Oliveira", email:"anaclaudia.oliveira@nubank.com.br", step:"M2", cluster:"N2" },
+  { nome:"Bianca Holanda",       email:"bianca.holanda@nubank.com.br",       step:"M2", cluster:"BPO" },
+  { nome:"Daniel Pereira",       email:"daniel.pereira@nubank.com.br",       step:"M2", cluster:"N2" },
+  { nome:"Mariana Foffa",        email:"mariana.foffa@nubank.com.br",        step:"M2", cluster:"Melhoria Contínua" },
+  // M1
+  { nome:"Amanda Garcia",        email:"amanda.garcia@nubank.com.br",        step:"M1", cluster:"Q&T" },
+  { nome:"Bruna Freitas",        email:"bruna.freitas@nubank.com.br",        step:"M1", cluster:"N2" },
+  { nome:"Bruno Ziurkelis",      email:"bruno.ziurkelis@nubank.com.br",      step:"M1", cluster:"N2" },
+  { nome:"Evandro Silva",        email:"evandro.silva@nubank.com.br",        step:"M1", cluster:"N2" },
+  { nome:"Giancarlo Mendonça",   email:"giancarlo.mendonca@nubank.com.br",   step:"M1", cluster:"Q&T" },
+  { nome:"Marilena Levy",        email:"marilena.levy@nubank.com.br",        step:"M1", cluster:"N2" },
+  { nome:"Nathalia Alcantara",   email:"nathalia.alcantara@nubank.com.br",   step:"M1", cluster:"N2" },
+  { nome:"Rogério Lobato",       email:"rogerio.lobato@nubank.com.br",       step:"M1", cluster:"N2" },
+  // IC5
+  { nome:"Felipe Eiji",          email:"felipe.eiji@nubank.com.br",          step:"IC5", cluster:"Melhoria Contínua" },
+  { nome:"Marilia Pinto",        email:"marilia.pinto@nubank.com.br",        step:"IC5", cluster:"Melhoria Contínua" },
+  { nome:"Rodrigo Gallo",        email:"rodrigo.gallo@nubank.com.br",        step:"IC5", cluster:"BPO" },
 ];
 
 const METRICAS = ["tNPS","Produtividade","Aderência","OTD 24h","Skip","Qualidade","SLA","Handover N1/N2","WoW","Engajamento","Customizada"];
@@ -48,7 +57,11 @@ const DB_TABLES = [
   { value:"manual",              label:"Manual (WoW, Engajamento, outros)",    metrica:"" },
 ];
 
-const CLUSTERS = ["N2 — Todos","N2 — Rede e Conectividade","N2 — Gerenciamento de Chip","N2 — Gerenciamento de Plano","N2 — Portabilidade","N2 — RPI","Q&T","BPO","Melhoria Contínua"];
+const IMPACTOS = [
+  "N2 — Todos","N2 — Rede e Conectividade","N2 — Gerenciamento de Chip",
+  "N2 — Gerenciamento de Plano","N2 — Portabilidade","N2 — RPI",
+  "OPS N2","OPS N1","OPS","Q&T","BPO","Melhoria Contínua","Outros"
+];
 
 const QUEUES = [
   "nucel-bug","nucel-calls-issues","nucel-no-signal","nucel-internet-issues",
@@ -58,6 +71,101 @@ const QUEUES = [
   "nucel-immediate-cancellation","nucel-usage","nucel-psim-delivery",
   "nucel-delivery-problems","nucel-delivery-apology","rpi-nucel","rpi-nucel-transfer",
   "nucel-waitlist","nucel-protocols",
+];
+
+const MEMBROS_NUCEL = [
+  { nome: "Adriane Santerio", email: "adriane.santerio@nubank.com.br" },
+  { nome: "Adriano Sousa", email: "adriano.sousa@nubank.com.br" },
+  { nome: "Amanda Cardoso", email: "amanda.cardoso@nubank.com.br" },
+  { nome: "Amanda Garcia", email: "amanda.garcia@nubank.com.br" },
+  { nome: "Ana Claudia Oliveira", email: "anaclaudia.oliveira@nubank.com.br" },
+  { nome: "Anderson Trindade", email: "anderson.trindade@nubank.com.br" },
+  { nome: "Bianca Feliciano", email: "bianca.feliciano@nubank.com.br" },
+  { nome: "Bianca Holanda", email: "bianca.holanda@nubank.com.br" },
+  { nome: "Brenda Arcanjo", email: "brenda.arcanjo@nubank.com.br" },
+  { nome: "Bruna Cacau", email: "bruna.cacau@nubank.com.br" },
+  { nome: "Bruna Freitas", email: "bruna.freitas@nubank.com.br" },
+  { nome: "Bruno Calazans", email: "bruno.calazans@nubank.com.br" },
+  { nome: "Bruno Ziurkelis", email: "bruno.ziurkelis@nubank.com.br" },
+  { nome: "Camila Souza", email: "camila.souza@nubank.com.br" },
+  { nome: "Carla Almeida", email: "carla.almeida@nubank.com.br" },
+  { nome: "Carla Ignes", email: "carla.ignes@nubank.com.br" },
+  { nome: "Christopher Souza", email: "christopher.souza@nubank.com.br" },
+  { nome: "Clarisse Barbosa", email: "clarisse.barbosa@nubank.com.br" },
+  { nome: "Daniel Marques", email: "daniel.marques2@nubank.com.br" },
+  { nome: "Daniel Pereira", email: "daniel.pereira@nubank.com.br" },
+  { nome: "Danielle Mayer", email: "danielle.mayer@nubank.com.br" },
+  { nome: "David Manriquez", email: "david.manriquez@nubank.com.br" },
+  { nome: "Debora Fontoura", email: "debora.fontoura@nubank.com.br" },
+  { nome: "Debora Silva", email: "debora.silva@nubank.com.br" },
+  { nome: "Dennys Carvalho", email: "dennys.carvalho@nubank.com.br" },
+  { nome: "Diego Maia", email: "diego.maia@nubank.com.br" },
+  { nome: "Diego Rodrigues", email: "diego.rodrigues@nubank.com.br" },
+  { nome: "Eduardo Fernando", email: "eduardo.fernando@nubank.com.br" },
+  { nome: "Elisangela Valentim", email: "elisangela.valentim@nubank.com.br" },
+  { nome: "Erika Nascimento", email: "erika.nascimento@nubank.com.br" },
+  { nome: "Estefany Jonas", email: "estefany.jonas@nubank.com.br" },
+  { nome: "Evandro Silva", email: "evandro.silva@nubank.com.br" },
+  { nome: "Fabiola Farias", email: "fabiola.farias@nubank.com.br" },
+  { nome: "Felipe Barbosa", email: "felipe.barbosasilva@nubank.com.br" },
+  { nome: "Felipe Eiji", email: "felipe.eiji@nubank.com.br" },
+  { nome: "Felipe Mauricio", email: "felipe.mauricio@nubank.com.br" },
+  { nome: "Fernanda Costa", email: "fernanda.costa@nubank.com.br" },
+  { nome: "Gabriela Souza", email: "gabriela.souza@nubank.com.br" },
+  { nome: "Giancarlo Mendonça", email: "giancarlo.mendonca@nubank.com.br" },
+  { nome: "Glaucia Lorenconi", email: "glaucia.lorenconi@nubank.com.br" },
+  { nome: "Guilherme Braga", email: "guilherme.braga@nubank.com.br" },
+  { nome: "Guilherme Sousa", email: "guilherme.sousa@nubank.com.br" },
+  { nome: "Huan Lemos", email: "huan.lemos@nubank.com.br" },
+  { nome: "Jair Linhares", email: "jair.linhares@nubank.com.br" },
+  { nome: "Jefferson Silva", email: "jefferson.silva@nubank.com.br" },
+  { nome: "Jeniffer Drielly", email: "jeniffer.drielly@nubank.com.br" },
+  { nome: "Jennifer Assuncao", email: "jennifer.assuncao@nubank.com.br" },
+  { nome: "Joao Morali", email: "joao.morali@nubank.com.br" },
+  { nome: "Jose Barbosa", email: "jose.barbosa2@nubank.com.br" },
+  { nome: "Juliana Pereira", email: "juliana.pereira@nubank.com.br" },
+  { nome: "Karol Helena", email: "karol.helena@nubank.com.br" },
+  { nome: "Kelvin Calisto", email: "kelvin.calisto@nubank.com.br" },
+  { nome: "Kodara Bertolini", email: "kodara.bertolini@nubank.com.br" },
+  { nome: "Lidiane Ayang", email: "lidiane.ayang@nubank.com.br" },
+  { nome: "Livia Bezerra", email: "livia.bezerra@nubank.com.br" },
+  { nome: "Luana Costa", email: "luana.costa@nubank.com.br" },
+  { nome: "Marcel Botelho", email: "marcel.botelho@nubank.com.br" },
+  { nome: "Marcella Ruggi", email: "marcella.ruggi@nubank.com.br" },
+  { nome: "Maria Renata", email: "maria.renata@nubank.com.br" },
+  { nome: "Mariana Foffa", email: "mariana.foffa@nubank.com.br" },
+  { nome: "Marilena Levy", email: "marilena.levy@nubank.com.br" },
+  { nome: "Marilia Cury", email: "marilia.cury@nubank.com.br" },
+  { nome: "Marilia Pinto", email: "marilia.pinto@nubank.com.br" },
+  { nome: "Marion Castro", email: "marion.castro@nubank.com.br" },
+  { nome: "Marta Binza", email: "marta.binza@nubank.com.br" },
+  { nome: "Mayara Passos", email: "mayara.passos@nubank.com.br" },
+  { nome: "Micaele Costa", email: "micaele.costa@nubank.com.br" },
+  { nome: "Natalia Dasan", email: "natalia.dasan@nubank.com.br" },
+  { nome: "Nathalia Alcantara", email: "nathalia.alcantara@nubank.com.br" },
+  { nome: "Patricia Sobral", email: "patricia.sobral@nubank.com.br" },
+  { nome: "Priscila Benetti", email: "priscila.benetti@nubank.com.br" },
+  { nome: "Raphael Fassizoli", email: "raphael.fassizoli@nubank.com.br" },
+  { nome: "Raul Gomes", email: "raul.gomes@nubank.com.br" },
+  { nome: "Roberta Almeida", email: "roberta.almeida@nubank.com.br" },
+  { nome: "Roberta Monteiro", email: "roberta.monteiro@nubank.com.br" },
+  { nome: "Rodrigo Gallo", email: "rodrigo.gallo@nubank.com.br" },
+  { nome: "Rogério Lobato", email: "rogerio.lobato@nubank.com.br" },
+  { nome: "Romario Melo", email: "romario.melo@nubank.com.br" },
+  { nome: "Rute Miranda", email: "rute.miranda@nubank.com.br" },
+  { nome: "Tamiris Cazumba", email: "tamiris.cazumba@nubank.com.br" },
+  { nome: "Tatiane Barros", email: "tatiane.barros@nubank.com.br" },
+  { nome: "Thaina Sousa", email: "thaina.sousa@nubank.com.br" },
+  { nome: "Thais Souza", email: "thais.souza@nubank.com.br" },
+  { nome: "Thatiane Santos", email: "thatiane.santos@nubank.com.br" },
+  { nome: "Thays Auzier", email: "thays.auzier@nubank.com.br" },
+  { nome: "Thiago Valentim", email: "thiago.valentim@nubank.com.br" },
+  { nome: "Val Tubero", email: "val.tubero@nubank.com.br" },
+  { nome: "Valquiria Macedo", email: "valquiria.macedo@nubank.com.br" },
+  { nome: "Verena Hereda", email: "verena.hereda@nubank.com.br" },
+  { nome: "Vinicius Fidelis", email: "vinicius.fidelis@nubank.com.br" },
+  { nome: "Vinicius Mitev", email: "vinicius.mitev@nubank.com.br" },
+  { nome: "Viviane Villas", email: "viviane.villas@nubank.com.br" },
 ];
 
 // ══════════════════════════════════════════════════════════════
@@ -580,9 +688,9 @@ function populateNovoForm() {
   $("nL").innerHTML = `<option value="">Selecionar...</option>` +
     LIDERES.map(l => `<option value="${l.nome}">${l.nome} · ${l.step} ${l.cluster}</option>`).join("");
 
-  // Clusters
+  // Impactos (ex-Clusters)
   $("nC").innerHTML = `<option value="">Selecionar...</option>` +
-    CLUSTERS.map(c => `<option value="${c}">${c}</option>`).join("");
+    IMPACTOS.map(c => `<option value="${c}">${c}</option>`).join("");
 
   // Métricas
   $("nM").innerHTML = `<option value="">Selecionar...</option>` +
@@ -597,9 +705,8 @@ function populateNovoForm() {
     `<span class="CH" onclick="tc(this)">${q}</span>`
   ).join("");
 
-  // Integrantes (multiselect baseado no BD)
-  $("nINT").innerHTML = `<option value="">Selecionar integrantes (opcional)</option>` +
-    LIDERES.map(l => `<option value="${l.email}">${l.nome}</option>`).join("");
+  // Integrantes — searchable checkboxes
+  renderIntegrantesSearch("");
 }
 
 function tc(el) { el.classList.toggle("on"); }
@@ -665,6 +772,100 @@ function closeMo() {
   $("mo").classList.remove("open");
   pg("proj", null);
   renderProjetos();
+}
+
+
+function renderIntegrantesSearch(q) {
+  const filtered = q
+    ? MEMBROS_NUCEL.filter(m => m.nome.toLowerCase().includes(q.toLowerCase()))
+    : MEMBROS_NUCEL;
+  const container = $("integrantes-list");
+  if (!container) return;
+  container.innerHTML = filtered.map(m =>
+    `<label class="INT-ITEM">
+       <input type="checkbox" value="${m.email}" data-nome="${m.nome}">
+       <span>${m.nome}</span>
+       <span style="font-size:10px;color:var(--i3);margin-left:auto">${m.email.split("@")[0]}</span>
+     </label>`
+  ).join("");
+}
+
+function getSelectedIntegrantes() {
+  return Array.from(document.querySelectorAll('#integrantes-list input:checked'))
+    .map(i => i.value).join(",");
+}
+
+async function suggestFromDrive() {
+  const url = $("nD").value.trim();
+  if (!url) { alert("Cole o link do Drive primeiro!"); return; }
+
+  const btn = $("btn-suggest");
+  btn.innerHTML = '<i class="ti ti-loader" style="animation:spin 1s linear infinite"></i> Lendo...';
+  btn.disabled  = true;
+
+  try {
+    const r = await fetch("/api/drive-suggest", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "suggest_tasks", url })
+    });
+    const data = await r.json();
+
+    if (data.tarefas?.length > 0) {
+      $("drive-suggestions").style.display = "block";
+      $("suggestions-list").innerHTML = data.tarefas.map((t, i) =>
+        `<label class="INT-ITEM">
+           <input type="checkbox" value="${t}" onchange="addTaskFromSuggestion(this)">
+           <span>${t}</span>
+         </label>`
+      ).join("");
+    } else {
+      $("drive-suggestions").innerHTML = "<div style=\"color:var(--i3);font-size:12px;padding:8px\">Não foi possível ler o documento.</div>";
+      $("drive-suggestions").style.display = "block";
+    }
+  } catch(e) {
+    console.error(e);
+  } finally {
+    btn.innerHTML = '<i class="ti ti-sparkles"></i> Sugerir tarefas com IA';
+    btn.disabled  = false;
+  }
+}
+
+async function searchDriveDocs() {
+  const titulo = $("nT").value.trim();
+  const query  = titulo || "nucel";
+  const btn    = $("btn-search-drive");
+  btn.innerHTML = '<i class="ti ti-loader" style="animation:spin 1s linear infinite"></i>';
+  btn.disabled  = true;
+  try {
+    const r = await fetch("/api/drive-suggest", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "search_docs", query })
+    });
+    const data = await r.json();
+    if (data.docs?.length > 0) {
+      $("drive-docs-list").innerHTML = data.docs.map(d =>
+        `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--s3)">
+           <i class="ti ti-file-text" style="color:var(--nu);font-size:14px"></i>
+           <span style="flex:1;font-size:12px;color:var(--ink)">${d.name}</span>
+           <button class="BG" style="font-size:10px;padding:3px 8px" onclick="$('nD').value='${d.webViewLink}';$('drive-docs').style.display='none'">Usar</button>
+         </div>`
+      ).join("");
+      $("drive-docs").style.display = "block";
+    } else {
+      alert("Nenhum documento encontrado no Drive para: " + query);
+    }
+  } catch(e) { console.error(e); }
+  finally { btn.innerHTML = '<i class="ti ti-search"></i>'; btn.disabled = false; }
+}
+
+function addTaskFromSuggestion(el) {
+  if (!el.checked) return;
+  const current = $("nTk") ? $("nTk").value : "";
+  if ($("nTk")) $("nTk").value = (current ? current + "\n" : "") + "- " + el.value;
+  el.parentElement.style.opacity = "0.5";
+  el.disabled = true;
 }
 
 // ══════════════════════════════════════════════════════════════

@@ -129,134 +129,141 @@
       <!-- NOVO PROJETO -->
       <div class="PG" id="pg-novo">
         <div class="PH"><h1>Novo projeto</h1><p>NuCel Pro Tracker · salvo no Drive · Slack notificado</p></div>
-        <div class="NTC"><i class="ti ti-info-circle"></i> Dados salvos em <strong>NuCel Pro Tracker — BD Projetos</strong></div>
-        <form id="formNovo" onsubmit="sv(event)" style="max-width:560px">
-          <div class="FG"><label class="FL2">Título do projeto *</label><input class="FI" id="nT" placeholder="Ex: Automação triagem nucel-bug" required/></div>
-          <div class="FR2">
-            <div class="FG"><label class="FL2">Líder *</label>
-              <select class="FI" id="nL" required>
-                <option value="">Selecionar...</option>
-                <option>Bruna Freitas</option><option>Evandro Silva</option>
-                <option>Bruno Ziurkelis</option><option>Nathalia Alcantara</option>
-                <option>Rogério Lobato</option><option>Marilena Levy</option>
-                <option>Ana Claudia Oliveira</option><option>Daniel Pereira</option>
-                <option>Bianca Holanda</option><option>Amanda Garcia</option>
-                <option>Giancarlo Mendonça</option><option>Mariana Foffa</option>
-              </select>
+        <div class="NTC"><i class="ti ti-info-circle" aria-hidden="true"></i> Dados salvos em <strong>NuCel Pro Tracker — BD Projetos</strong></div>
+        <form id="formNovo" style="max-width:600px">
+
+          <!-- Bloco 1: Identificação -->
+          <div class="FORM-SECTION">
+            <div class="FORM-SECTION-TITLE">Identificação</div>
+            <div class="FG"><label class="FL2">Título do projeto *</label>
+              <input class="FI" id="nT" placeholder="Ex: Automação triagem nucel-bug" required/>
             </div>
-            <div class="FG"><label class="FL2">Status</label>
-              <select class="FI" id="nSt">
-                <option>Iniciado</option><option>Prorrogado</option>
-                <option>Finalizado</option><option>Cancelado</option>
-              </select>
+            <div class="FR2">
+              <div class="FG"><label class="FL2">Líder *</label>
+                <select class="FI" id="nL" required><option value="">Selecionar...</option></select>
+              </div>
+              <div class="FG"><label class="FL2">Status</label>
+                <select class="FI" id="nSt">
+                  <option>Iniciado</option><option>Prorrogado</option>
+                  <option>Finalizado</option><option>Cancelado</option>
+                </select>
+              </div>
             </div>
-          </div>
-          <div class="FR2">
-            <div class="FG"><label class="FL2">Semana de entrega</label><input class="FI" id="nW" type="week"/></div>
-            <div class="FG"><label class="FL2">Cluster</label>
-              <select class="FI" id="nC">
-                <option value="">Selecionar...</option>
-                <option>N2 — Todos</option><option>N2 — Rede e Conectividade</option>
-                <option>N2 — Gerenciamento de Chip</option><option>N2 — Gerenciamento de Plano</option>
-                <option>N2 — Portabilidade</option><option>N2 — RPI</option>
-                <option>Q&amp;T</option><option>BPO</option><option>Melhoria Contínua</option>
-              </select>
+            <div class="FR2">
+              <div class="FG"><label class="FL2">Semana de entrega</label>
+                <input class="FI" id="nW" type="week"/>
+              </div>
+              <div class="FG"><label class="FL2">Impacto</label>
+                <select class="FI" id="nC"><option value="">Selecionar...</option></select>
+              </div>
             </div>
-          </div>
-          <div class="FR2">
-            <div class="FG"><label class="FL2">Baseline (valor antes do projeto)</label><input class="FI" id="nBL" placeholder="Ex: 65% ou 12 min"/></div>
-            <div class="FG"><label class="FL2">Saúde do projeto</label>
-              <select class="FI" id="nSaude">
-                <option value="no_prazo">🟢 No prazo</option>
-                <option value="em_risco">🟡 Em risco</option>
-                <option value="bloqueado">🔴 Bloqueado</option>
-              </select>
+            <div class="FR2">
+              <div class="FG"><label class="FL2">Saúde do projeto</label>
+                <select class="FI" id="nSaude">
+                  <option value="no_prazo">🟢 No prazo</option>
+                  <option value="em_risco">🟡 Em risco</option>
+                  <option value="bloqueado">🔴 Bloqueado</option>
+                </select>
+              </div>
+              <div class="FG"><label class="FL2">Baseline (valor antes do projeto)</label>
+                <input class="FI" id="nBL" placeholder="Ex: 65% ou 12 min"/>
+              </div>
             </div>
-          </div>
-          <div class="FG">
-            <label class="FL2">Impacto direto no cliente?</label>
-            <div style="display:flex;gap:12px;margin-top:4px">
-              <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;color:var(--i6)">
-                <input type="radio" name="impacto" id="nIC" value="Não" checked onchange="toggleImpacto(this.value)"> Não
-              </label>
-              <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;color:var(--i6)">
-                <input type="radio" name="impacto" value="Sim" onchange="toggleImpacto(this.value)"> Sim
-              </label>
-            </div>
-            <div id="volume-row" style="display:none;margin-top:8px">
-              <input class="FI" id="nVC" placeholder="Volume aproximado de clientes impactados (ex: 500)"/>
-            </div>
-          </div>
-          <div class="FG">
-            <label class="FL2">Integrantes do projeto</label>
-            <select class="FI" id="nINT" multiple style="height:80px"><option value="">Carregando...</option></select>
-          </div>
-          <div class="DBS">
-            <div class="DBT"><i class="ti ti-database" aria-hidden="true"></i> Configuração Databricks
-              <span style="margin-left:auto;font-size:9px;font-weight:400;background:var(--nubg);color:var(--nu);padding:2px 7px;border-radius:100px">spoke = nucel · sem UV · sem High Income</span>
-            </div>
-            <div class="FG" style="margin-bottom:10px">
-              <label class="FL2">Tabela de métricas</label>
-              <select class="FI" id="nDB">
-                <option value="">Não mensurado via Databricks</option>
-              </select>
-            </div>
-            <div class="FG" style="margin-bottom:10px">
-              <label class="FL2">Canal(is) de atendimento</label>
-              <div style="display:flex;gap:7px;margin-top:5px;flex-wrap:wrap">
-                <label class="CH-CANAL">
-                  <input type="checkbox" value="backoffice" checked> Backoffice
+            <div class="FG">
+              <label class="FL2">Impacto direto no cliente?</label>
+              <div style="display:flex;gap:12px;margin-top:5px">
+                <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;color:var(--i6)">
+                  <input type="radio" name="impacto" id="nIC" value="Não" checked onchange="toggleImpacto(this.value)"> Não
                 </label>
-                <label class="CH-CANAL">
-                  <input type="checkbox" value="chat"> Chat
-                </label>
-                <label class="CH-CANAL">
-                  <input type="checkbox" value="telefone"> Telefone
+                <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;color:var(--i6)">
+                  <input type="radio" name="impacto" value="Sim" onchange="toggleImpacto(this.value)"> Sim
                 </label>
               </div>
-              <div style="font-size:10px;color:var(--i3);margin-top:6px">
-                ⚡ Filtros sempre aplicados: <strong style="color:var(--nu)">NuCel</strong> · excluindo <strong>UV</strong> e <strong>High Income</strong>
+              <div id="volume-row" style="display:none;margin-top:8px">
+                <input class="FI" id="nVC" placeholder="Volume aproximado de clientes impactados"/>
               </div>
             </div>
           </div>
-          <div class="FG"><label class="FL2">Link do documento no Drive (opcional)</label><input class="FI" id="nD" type="url" placeholder="https://docs.google.com/..."/></div>
-          <div class="DBS">
-            <div class="DBT"><i class="ti ti-database"></i> Queues Databricks vinculadas</div>
-            <div style="font-size:10px;color:var(--i6);margin-bottom:7px">Selecione as queues que este projeto monitora</div>
-            <div class="CHS" id="qc">
-              <span class="CH" onclick="tc(this)">nucel-bug</span>
-              <span class="CH" onclick="tc(this)">nucel-calls-issues</span>
-              <span class="CH" onclick="tc(this)">nucel-no-signal</span>
-              <span class="CH" onclick="tc(this)">nucel-internet-issues</span>
-              <span class="CH" onclick="tc(this)">nucel-sms-issues</span>
-              <span class="CH" onclick="tc(this)">nucel-esim</span>
-              <span class="CH" onclick="tc(this)">nucel-psim</span>
-              <span class="CH" onclick="tc(this)">nucel-portability</span>
-              <span class="CH" onclick="tc(this)">nucel-status</span>
-              <span class="CH" onclick="tc(this)">nucel-reembolso</span>
-              <span class="CH" onclick="tc(this)">nucel-turbo-box</span>
-              <span class="CH" onclick="tc(this)">nucel-transferencia</span>
-              <span class="CH" onclick="tc(this)">nucel-bonus-issues</span>
-              <span class="CH" onclick="tc(this)">nucel-recovery</span>
-              <span class="CH" onclick="tc(this)">nucel-pin-puk</span>
-            </div>
-            <div class="FR2" style="margin-top:11px">
-              <div class="FG"><label class="FL2">Métrica de sucesso</label>
+
+          <!-- Bloco 2: Integrantes -->
+          <div class="FORM-SECTION">
+            <div class="FORM-SECTION-TITLE">Integrantes do projeto</div>
+            <input class="FI" placeholder="🔍 Buscar membro do time..." oninput="renderIntegrantesSearch(this.value)" style="margin-bottom:8px"/>
+            <div id="integrantes-list" style="max-height:180px;overflow-y:auto;border:1px solid var(--bd);border-radius:10px;padding:6px"></div>
+          </div>
+
+          <!-- Bloco 3: Métrica de Sucesso -->
+          <div class="FORM-SECTION">
+            <div class="FORM-SECTION-TITLE">Métrica de sucesso</div>
+            <div class="FR2">
+              <div class="FG"><label class="FL2">Métrica *</label>
                 <select class="FI" id="nM"><option value="">Selecionar...</option></select>
               </div>
-              <div class="FG"><label class="FL2">Target</label><input class="FI" id="nTg" placeholder="Ex: 85% ou 8 min"/></div>
+              <div class="FG"><label class="FL2">Target</label>
+                <input class="FI" id="nTg" placeholder="Ex: 85% ou 8 min"/>
+              </div>
             </div>
-            <div class="FG"><label class="FL2">Job Databricks para validação automática</label><input class="FI" id="nJ" placeholder="Ex: nucel_resolution_rate_weekly"/></div>
           </div>
-          <div class="FG"><label class="FL2">Tarefas</label><textarea class="FI" id="nTk" rows="3" placeholder="- Mapear fluxo atual&#10;- Validar hipótese no Databricks&#10;- Implementar e acompanhar"></textarea></div>
-          <div style="display:flex;gap:8px">
-            <button type="submit" class="BP"><i class="ti ti-check"></i> Salvar projeto</button>
+
+          <!-- Bloco 4: Databricks -->
+          <div class="FORM-SECTION">
+            <div class="FORM-SECTION-TITLE">Databricks
+              <span style="margin-left:8px;font-size:9px;font-weight:400;background:var(--nubg);color:var(--nu);padding:2px 8px;border-radius:100px">spoke=nucel · sem UV · sem High Income</span>
+            </div>
+            <div class="FG"><label class="FL2">Tabela de métricas</label>
+              <select class="FI" id="nDB"><option value="">Não mensurado via Databricks</option></select>
+            </div>
+            <div class="FG"><label class="FL2">Canal(is) de atendimento</label>
+              <div style="display:flex;gap:7px;margin-top:5px;flex-wrap:wrap">
+                <label class="CH-CANAL"><input type="checkbox" value="backoffice" checked> Backoffice</label>
+                <label class="CH-CANAL"><input type="checkbox" value="chat"> Chat</label>
+                <label class="CH-CANAL"><input type="checkbox" value="telefone"> Telefone</label>
+              </div>
+            </div>
+            <div class="FG"><label class="FL2">Queues vinculadas</label>
+              <div class="CHS" id="qc"></div>
+            </div>
+          </div>
+
+          <!-- Bloco 5: Documento Drive -->
+          <div class="FORM-SECTION">
+            <div class="FORM-SECTION-TITLE">Documento no Drive</div>
+            <div class="FG">
+              <label class="FL2">Link do documento</label>
+              <div style="display:flex;gap:6px">
+                <input class="FI" id="nD" type="url" placeholder="https://docs.google.com/..." style="flex:1"/>
+                <button type="button" id="btn-search-drive" class="BG" style="padding:6px 10px;flex-shrink:0" onclick="searchDriveDocs()" title="Buscar docs no Drive">
+                  <i class="ti ti-search" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Docs sugeridos pelo Drive -->
+            <div id="drive-docs" style="display:none;background:var(--s2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
+              <div style="font-size:10px;font-weight:600;color:var(--i3);text-transform:uppercase;margin-bottom:6px">Docs encontrados no Drive</div>
+              <div id="drive-docs-list"></div>
+            </div>
+            <!-- Sugestão de tarefas com IA -->
+            <button type="button" id="btn-suggest" class="BG" style="font-size:11px;width:100%" onclick="suggestFromDrive()">
+              <i class="ti ti-sparkles" aria-hidden="true"></i> Ler documento e sugerir tarefas com IA
+            </button>
+            <div id="drive-suggestions" style="display:none;background:var(--nubg);border:1px solid var(--nul);border-radius:10px;padding:10px 12px;margin-top:8px">
+              <div style="font-size:10px;font-weight:600;color:var(--nu);text-transform:uppercase;margin-bottom:8px">✨ Tarefas sugeridas — clique para adicionar</div>
+              <div id="suggestions-list"></div>
+            </div>
+            <div class="FG" style="margin-top:10px">
+              <label class="FL2">Tarefas do projeto</label>
+              <textarea class="FI" id="nTk" rows="3" placeholder="- Mapear fluxo atual&#10;- Validar hipótese&#10;- Implementar e acompanhar"></textarea>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;padding-top:4px">
+            <button type="submit" class="BP"><i class="ti ti-check" aria-hidden="true"></i> Salvar projeto</button>
             <button type="button" class="BG" onclick="pg('exec',null)">Cancelar</button>
           </div>
         </form>
       </div>
 
-      <!-- AGENDAR REUNIÃO -->
+            <!-- AGENDAR REUNIÃO -->
       <div class="PG" id="pg-cal">
         <div class="PH"><h1>Agendar reunião</h1><p>Cruza agendas e sugere 3 horários livres via Google Agenda</p></div>
         <div style="max-width:420px">
