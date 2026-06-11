@@ -1,3 +1,29 @@
+
+<!-- TELA DE BOAS-VINDAS -->
+<div id="welcome-screen" style="display:none;position:fixed;inset:0;z-index:10000;background:linear-gradient(135deg,#1a0030 0%,#2d0050 50%,#1a0030 100%);align-items:center;justify-content:center">
+  <div style="background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:40px 36px;width:100%;max-width:420px;text-align:center">
+    <img src="logo.png" alt="NuCel Pro Tracker"
+      style="width:160px;height:160px;object-fit:contain;border-radius:28px;margin-bottom:8px;display:block;margin-left:auto;margin-right:auto"
+      onerror="this.style.display='none'"/>
+    <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:28px;letter-spacing:.04em">Portal de acompanhamento de projetos</div>
+
+    <div style="text-align:left;margin-bottom:20px">
+      <label style="display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Olá! Quem é você?</label>
+      <select id="welcome-select" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:#fff;font-size:13px;font-family:inherit;cursor:pointer;appearance:none">
+        <option value="" style="background:#1a0030">Selecionar meu nome...</option>
+      </select>
+    </div>
+
+    <button onclick="confirmWelcome()" id="btn-welcome"
+      style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#8A05BE,#C056FF);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity .15s"
+      onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
+      Entrar no portal →
+    </button>
+
+    <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:14px">Sua escolha será salva neste navegador</div>
+  </div>
+</div>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -260,57 +286,45 @@
         </form>
       </div>
 
-            <!-- AGENDAR REUNIÃO -->
-      <div class="PG" id="pg-cal">
-        <div class="PH"><h1>Agendar reunião</h1><p>Cruza agendas e sugere 3 horários livres via Google Agenda</p></div>
-        <div style="max-width:420px">
-          <div class="FG"><label class="FL2">Projeto</label>
-            <select class="FI" id="calP" onchange="showSlots()">
-              <option value="">Selecionar projeto...</option>
-            </select>
-          </div>
-          <div id="calSlots" style="display:none">
-            <div style="font-size:11px;color:var(--i6);margin-bottom:10px" id="calMembers"></div>
-            <div style="font-size:10px;font-weight:600;color:var(--i3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">3 horários disponíveis</div>
-            <div class="CAL-CARD"><div><div class="cdt">Terça, 3 jun · 10:00 – 11:00</div><div class="cfree">✓ Todos disponíveis</div></div><i class="ti ti-chevron-right" style="color:var(--i3)"></i></div>
-            <div class="CAL-CARD"><div><div class="cdt">Quarta, 4 jun · 14:30 – 15:30</div><div class="cfree">✓ Todos disponíveis</div></div><i class="ti ti-chevron-right" style="color:var(--i3)"></i></div>
-            <div class="CAL-CARD"><div><div class="cdt">Sexta, 6 jun · 09:00 – 10:00</div><div class="cfree">✓ Todos disponíveis</div></div><i class="ti ti-chevron-right" style="color:var(--i3)"></i></div>
-            <button class="BP" style="margin-top:4px"><i class="ti ti-calendar-plus"></i> Criar convite</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- DADOS & HISTÓRICO -->
+            <!-- DADOS & HISTÓRICO -->
       <div class="PG" id="pg-dados">
-        <div class="PH"><h1>Dados & Histórico</h1><p>3 planilhas no Google Drive · atualizadas em tempo real</p></div>
-        <div class="TC">
-          <div class="info-row">
-            <div class="info-icon" style="background:#E8F1FF"><i class="ti ti-table" style="color:#1558B0"></i></div>
-            <div>
-              <div class="info-title">BD Projetos & Audit Log</div>
-              <div class="info-sub"><a href="https://docs.google.com/spreadsheets/d/1MEYI1-B_mEzWEyHiDmbaTdG_nfyPgO1uxuXWwc4baf4" target="_blank" style="color:var(--nu)">Abrir no Drive ↗</a></div>
-              <div class="code-blk">ID | Título | Líder | Status | Queue | Target | Real | Result_Flag | Link_Drive</div>
-            </div>
+        <div class="PH"><h1>Dados &amp; Histórico</h1><p>Planilhas do time NuCel · Acesso admin · Audit Log</p></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+          <a href="https://docs.google.com/spreadsheets/d/1MEYI1-B_mEzWEyHiDmbaTdG_nfyPgO1uxuXWwc4baf4" target="_blank" class="DATA-CARD">
+            <div class="DATA-ICON">📋</div>
+            <div class="DATA-TITLE">BD Projetos</div>
+            <div class="DATA-SUB">Ver e editar todos os projetos</div>
+            <span class="DATA-TAG">Admin</span>
+          </a>
+          <a href="https://docs.google.com/spreadsheets/d/19BCJyrIp_0pQjIVy4CA2U4PIn5xROdj9tkHq1E-K3Zo" target="_blank" class="DATA-CARD">
+            <div class="DATA-ICON">🔍</div>
+            <div class="DATA-TITLE">Audit Log</div>
+            <div class="DATA-SUB">Histórico de ações e alterações</div>
+            <span class="DATA-TAG">Histórico</span>
+          </a>
+          <a href="https://docs.google.com/spreadsheets/d/1-RUn9m70PIUQ3Bk2EVliXPAPPCNc-CVntPVDqIFIxQ0" target="_blank" class="DATA-CARD">
+            <div class="DATA-ICON">⚡</div>
+            <div class="DATA-TITLE">Queues Databricks</div>
+            <div class="DATA-SUB">Mapeamento de filas e tabelas</div>
+            <span class="DATA-TAG">Referência</span>
+          </a>
+        </div>
+        <div style="background:var(--w);border:1px solid var(--bd);border-radius:14px;padding:16px 18px">
+          <div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:12px">🔐 Acesso Admin — BD Projetos</div>
+          <div style="font-size:12px;color:var(--i6);line-height:1.8">
+            Para <strong>editar, atualizar métricas reais ou mudar status</strong> de projetos, acesse diretamente a planilha BD Projetos.<br>
+            As alterações serão refletidas no portal após recarregar a página.
           </div>
-          <div class="info-row">
-            <div class="info-icon" style="background:#E0F7F0"><i class="ti ti-history" style="color:#006647"></i></div>
-            <div>
-              <div class="info-title">Audit Log</div>
-              <div class="info-sub"><a href="https://docs.google.com/spreadsheets/d/19BCJyrIp_0pQjIVy4CA2U4PIn5xROdj9tkHq1E-K3Zo" target="_blank" style="color:var(--nu)">Abrir no Drive ↗</a></div>
-              <div class="code-blk">Timestamp | Usuário | Campo_Alterado | Valor_Antigo → Valor_Novo | Ação</div>
-            </div>
-          </div>
-          <div class="info-row" style="border:none">
-            <div class="info-icon" style="background:#FFF3E0"><i class="ti ti-database" style="color:#8A4500"></i></div>
-            <div>
-              <div class="info-title">Queues de Referência (Databricks)</div>
-              <div class="info-sub"><a href="https://docs.google.com/spreadsheets/d/1-RUn9m70PIUQ3Bk2EVliXPAPPCNc-CVntPVDqIFIxQ0" target="_blank" style="color:var(--nu)">Abrir no Drive ↗</a></div>
-              <div class="code-blk">Queue_ID | Workflow | Cluster | Parceiro | SLA_N3 | Métrica_Sugerida</div>
-            </div>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <a href="https://docs.google.com/spreadsheets/d/1MEYI1-B_mEzWEyHiDmbaTdG_nfyPgO1uxuXWwc4baf4" target="_blank" class="BP" style="font-size:11px;padding:6px 14px;text-decoration:none">
+              <i class="ti ti-external-link"></i> Abrir BD Projetos (Admin)
+            </a>
+            <a href="https://docs.google.com/spreadsheets/d/19BCJyrIp_0pQjIVy4CA2U4PIn5xROdj9tkHq1E-K3Zo" target="_blank" class="BG" style="font-size:11px;padding:6px 14px;text-decoration:none">
+              <i class="ti ti-external-link"></i> Ver Audit Log
+            </a>
           </div>
         </div>
       </div>
-
 
       <!-- ORGANOGRAMA -->
       <div class="PG" id="pg-org">
@@ -366,6 +380,32 @@
       <button class="MX" onclick="closeDetalhe()"><i class="ti ti-x"></i></button>
     </div>
     <div class="MB" id="detalhe-content"></div>
+  </div>
+</div>
+
+
+<!-- MODAL NOTIFICAR TIME -->
+<div class="MO" id="modal-notify">
+  <div class="MDL" style="max-width:440px">
+    <div class="MH">
+      <h2><i class="ti ti-brand-slack" style="color:#4A154B"></i> Notificar time no Slack</h2>
+      <button class="MX" onclick="closeNotifyModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="MB">
+      <div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:4px" id="notify-proj-title"></div>
+      <div style="font-size:11px;color:var(--i3);margin-bottom:14px">Será enviado para <strong>#nucel-pro-tracker-app</strong> com status, saúde, baseline → target → real e integrantes.</div>
+      <input type="hidden" id="notify-proj-id"/>
+      <div class="FG" style="margin-bottom:0">
+        <label class="FL2">Nota do líder (opcional)</label>
+        <textarea class="FI" id="notify-nota" rows="3" placeholder="Ex: Avançamos 5% essa semana. Próximo passo: ajuste de threshold..."></textarea>
+      </div>
+    </div>
+    <div class="MF">
+      <button class="BG" onclick="closeNotifyModal()">Cancelar</button>
+      <button class="BP" id="btn-notify-send" onclick="sendNotifySlack()">
+        <i class="ti ti-send"></i> Enviar notificação
+      </button>
+    </div>
   </div>
 </div>
 
