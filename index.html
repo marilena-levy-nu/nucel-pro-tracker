@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NuCel Pro Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ════════════════════════════════════════════════════════ -->
+<aside id="sidebar">
+  <div class="sidebar-logo">
+    <div style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-.3px;">
+      <span style="color:#A855F7;">NuCel</span> Pro Tracker
+    </div>
+    <div class="version">v3.0 · 2025</div>
+  </div>
+
+  <nav>
+    <div class="nav-item active" onclick="navigate('exec')">
+      <span class="nav-icon">📊</span> Visão Executiva
+    </div>
+    <div class="nav-item" onclick="navigate('projetos')">
+      <span class="nav-icon">📋</span> Todos os Projetos
+    </div>
+    <div class="nav-item" onclick="navigate('lider')">
+      <span class="nav-icon">👤</span> Por Líder
+    </div>
+    <div class="nav-item" onclick="navigate('novo')">
+      <span class="nav-icon">➕</span> Novo Projeto
+    </div>
+    <div class="nav-item" onclick="navigate('dados')">
+      <span class="nav-icon">🗄️</span> Dados &amp; Histórico
+    </div>
+    <div class="nav-item" onclick="navigate('organograma')">
+      <span class="nav-icon">🏢</span> Organograma
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user" onclick="openWelcome()">
+      <div class="user-avatar" id="sidebarInitials">?</div>
+      <div>
+        <div id="sidebarName" style="color:rgba(255,255,255,.7);font-size:12px;">Identificar-me</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);">NuCel Team</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN ════════════════════════════════════════════════════════════ -->
+<main id="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">Visão Executiva</div>
+    <div class="topbar-actions">
+      <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">🌙</button>
+      <button class="btn btn-primary btn-sm" onclick="navigate('novo')">+ Novo Projeto</button>
+    </div>
+  </div>
+
+  <div class="page-content">
+
+    <!-- ─── VISÃO EXECUTIVA ─────────────────────────────────────────── -->
+    <div id="page-exec" class="page active">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Visão Executiva</div>
+          <div class="section-sub">Resumo operacional do time NuCel</div>
+        </div>
+        <div class="filters" id="execFilters">
+          <span class="filter-chip active" onclick="filterExec('todos',this)">Todos</span>
+          <span class="filter-chip" onclick="filterExec('Iniciado',this)">Iniciado</span>
+          <span class="filter-chip" onclick="filterExec('Finalizado',this)">Finalizado</span>
+          <span class="filter-chip" onclick="filterExec('Em Risco',this)">Em Risco</span>
+          <span class="filter-chip" onclick="filterExec('Bloqueado',this)">Bloqueado</span>
+        </div>
+      </div>
+
+      <div class="kpi-grid" id="kpiGrid">
+        <div class="kpi-card">
+          <div class="kpi-label">Total de Projetos</div>
+          <div class="kpi-value nu-gradient" id="kpiTotal">—</div>
+          <div class="kpi-sub">registrados no portal</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Taxa de Sucesso</div>
+          <div class="kpi-value nu-gradient" id="kpiSucesso">—</div>
+          <div class="kpi-sub">meta atingida</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Em Andamento</div>
+          <div class="kpi-value nu-gradient" id="kpiWip">—</div>
+          <div class="kpi-sub">projetos ativos</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Líderes Ativos</div>
+          <div class="kpi-value nu-gradient" id="kpiLideres">—</div>
+          <div class="kpi-sub">com projetos registrados</div>
+        </div>
+      </div>
+
+      <div class="leader-grid" id="leaderCards">
+        <div class="loading"><div class="spinner"></div> Carregando projetos...</div>
+      </div>
+    </div>
+
+    <!-- ─── TODOS OS PROJETOS ────────────────────────────────────────── -->
+    <div id="page-projetos" class="page">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Todos os Projetos</div>
+          <div class="section-sub">Clique em qualquer linha para ver o one-pager</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="text" id="searchInput" placeholder="Buscar projeto..." style="width:200px;" oninput="renderProjetosTable()" />
+          <select id="statusFilter" onchange="renderProjetosTable()" style="width:140px;">
+            <option value="">Todos os status</option>
+            <option>Iniciado</option>
+            <option>Prorrogado</option>
+            <option>Finalizado</option>
+            <option>Cancelado</option>
+          </select>
+        </div>
+      </div>
+      <div class="card" style="padding:0">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Projeto</th>
+                <th>Líder</th>
+                <th>Status</th>
+                <th>Saúde</th>
+                <th>Métrica</th>
+                <th>Baseline</th>
+                <th>Target</th>
+                <th>Real</th>
+                <th>Resultado</th>
+              </tr>
+            </thead>
+            <tbody id="projetosBody">
+              <tr><td colspan="9"><div class="loading"><div class="spinner"></div> Carregando...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── POR LÍDER ────────────────────────────────────────────────── -->
+    <div id="page-lider" class="page">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Por Líder</div>
+          <div class="section-sub">Projetos agrupados por hierarquia</div>
+        </div>
+      </div>
+      <div id="liderAccordions">
+        <div class="loading"><div class="spinner"></div> Carregando...</div>
+      </div>
+    </div>
+
+    <!-- ─── NOVO PROJETO ─────────────────────────────────────────────── -->
+    <div id="page-novo" class="page">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Novo Projeto</div>
+          <div class="section-sub">Preencha os blocos abaixo para registrar um projeto</div>
+        </div>
+      </div>
+
+      <form id="novoForm" onsubmit="submitNovoProjeto(event)">
+
+        <!-- Bloco 1 — Identificação -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-num">1</div>
+            Identificação do Projeto
+          </div>
+          <div class="form-body">
+            <div class="form-grid">
+              <div class="form-group full">
+                <label>Título do Projeto <span class="req">*</span></label>
+                <input type="text" id="fTitulo" placeholder="Ex: Redução de SLA no canal Chat" required />
+              </div>
+              <div class="form-group">
+                <label>Líder <span class="req">*</span></label>
+                <select id="fLider" required>
+                  <option value="">Selecione o líder</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <select id="fStatus">
+                  <option>Iniciado</option>
+                  <option>Prorrogado</option>
+                  <option>Finalizado</option>
+                  <option>Cancelado</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Semana de Entrega</label>
+                <input type="week" id="fSemana" />
+              </div>
+              <div class="form-group">
+                <label>Impacto / Cluster</label>
+                <select id="fCluster">
+                  <option>N2 variantes</option>
+                  <option>OPS N2</option>
+                  <option>OPS N1</option>
+                  <option>OPS</option>
+                  <option>Q&amp;T</option>
+                  <option>BPO</option>
+                  <option>Melhoria Contínua</option>
+                  <option>Outros</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Saúde do Projeto</label>
+                <div class="radio-group" id="fSaudeGroup">
+                  <label class="radio-btn selected">
+                    <input type="radio" name="saude" value="No prazo" checked onchange="updateRadio(this)"> 🟢 No prazo
+                  </label>
+                  <label class="radio-btn">
+                    <input type="radio" name="saude" value="Em risco" onchange="updateRadio(this)"> 🟡 Em risco
+                  </label>
+                  <label class="radio-btn">
+                    <input type="radio" name="saude" value="Bloqueado" onchange="updateRadio(this)"> 🔴 Bloqueado
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Baseline (valor atual)</label>
+                <input type="number" id="fBaseline" placeholder="Ex: 72" step="any" />
+              </div>
+              <div class="form-group">
+                <label>Impacto direto no cliente?</label>
+                <div class="radio-group" id="fImpactoGroup">
+                  <label class="radio-btn selected">
+                    <input type="radio" name="impacto" value="Sim" checked onchange="updateRadio(this)"> Sim
+                  </label>
+                  <label class="radio-btn">
+                    <input type="radio" name="impacto" value="Não" onchange="updateRadio(this)"> Não
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Volume aproximado de clientes</label>
+                <input type="number" id="fVolume" placeholder="Ex: 50000" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloco 2 — Integrantes -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-num">2</div>
+            Integrantes do Projeto
+          </div>
+          <div class="form-body">
+            <div class="integrantes-search">
+              <input type="text" id="intSearch" placeholder="Buscar membro do time..." oninput="renderIntegrantesSearch(this.value)" />
+            </div>
+            <div class="integrantes-grid" id="intGrid"></div>
+            <div class="selected-chips" id="selectedChips"></div>
+          </div>
+        </div>
+
+        <!-- Bloco 3 — Métrica de Sucesso -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-num">3</div>
+            Métrica de Sucesso
+          </div>
+          <div class="form-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Métrica principal <span class="req">*</span></label>
+                <select id="fMetrica" required>
+                  <option value="">Selecione</option>
+                  <option>tNPS</option>
+                  <option>Produtividade</option>
+                  <option>Aderência</option>
+                  <option>OTD 24h</option>
+                  <option>Skip</option>
+                  <option>Qualidade</option>
+                  <option>SLA</option>
+                  <option>Handover N1/N2</option>
+                  <option>WoW</option>
+                  <option>Engajamento</option>
+                  <option>Customizada</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Target <span class="req">*</span></label>
+                <input type="number" id="fTarget" placeholder="Ex: 80" step="any" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloco 4 — Databricks -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-num">4</div>
+            Configuração Databricks
+          </div>
+          <div class="form-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Tabela de métricas</label>
+                <select id="fTabela">
+                  <option value="">Sem vínculo Databricks</option>
+                  <option value="usr.cx_golden_layer.sla_wt">SLA — sla_wt</option>
+                  <option value="usr.cx_golden_layer.interaction_statuses">Handover — interaction_statuses</option>
+                  <option value="usr.cx_golden_layer.tnps_resolutivity">tNPS — tnps_resolutivity</option>
+                  <option value="usr.cx_golden_layer.jobs_done">Produtividade — jobs_done</option>
+                  <option value="usr.cx_golden_layer.jobs_created">Volume — jobs_created</option>
+                  <option value="usr.cx_golden_layer.ofrt_otd">OTD 24h — ofrt_otd</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Canais</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-chip selected" onclick="toggleChip(this)">
+                    <input type="checkbox" name="canal" value="backoffice" checked> Backoffice
+                  </label>
+                  <label class="checkbox-chip selected" onclick="toggleChip(this)">
+                    <input type="checkbox" name="canal" value="chat" checked> Chat
+                  </label>
+                  <label class="checkbox-chip selected" onclick="toggleChip(this)">
+                    <input type="checkbox" name="canal" value="telefone" checked> Telefone
+                  </label>
+                </div>
+              </div>
+              <div class="form-group full">
+                <label>Queues vinculadas</label>
+                <input type="text" id="fQueues" placeholder="Ex: nucel-backoffice-cancelamento, nucel-chat-duvidas (separadas por vírgula)" />
+                <small style="color:var(--text-3);font-size:11px;">Deixe em branco para usar todas as queues do filtro spoke=nucel</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloco 5 — Documento & Tarefas -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-num">5</div>
+            Documento &amp; Tarefas
+          </div>
+          <div class="form-body">
+            <div class="form-grid">
+              <div class="form-group full">
+                <label>Link do documento no Drive</label>
+                <input type="text" id="fDrive" placeholder="https://docs.google.com/..." />
+              </div>
+              <div class="form-group full">
+                <label>Tarefas do projeto</label>
+                <textarea id="fTarefas" placeholder="Descreva as principais tarefas, etapas ou checkpoints do projeto..." rows="4"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button type="button" class="btn btn-ghost" onclick="resetForm()">Limpar</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            <span id="submitText">✓ Salvar Projeto</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- ─── DADOS & HISTÓRICO ────────────────────────────────────────── -->
+    <div id="page-dados" class="page">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Dados &amp; Histórico</div>
+          <div class="section-sub">Acesso direto às fontes de dados e logs</div>
+        </div>
+      </div>
+      <div class="data-links">
+        <a href="https://docs.google.com/spreadsheets/d/1MEYI1-B_mEzWEyHiDmbaTdG_nfyPgO1uxuXWwc4baf4" target="_blank" class="data-link-card">
+          <span class="data-link-icon">📊</span>
+          <div>
+            <div class="data-link-name">BD Projetos</div>
+            <div class="data-link-desc">Google Sheets · Banco de dados principal</div>
+          </div>
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/19BCJyrIp_0pQjIVy4CA2U4PIn5xROdj9tkHq1E-K3Zo" target="_blank" class="data-link-card">
+          <span class="data-link-icon">📝</span>
+          <div>
+            <div class="data-link-name">Audit Log</div>
+            <div class="data-link-desc">Google Sheets · Histórico de criações e edições</div>
+          </div>
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/1-RUn9m70PIUQ3Bk2EVliXPAPPCNc-CVntPVDqIFIxQ0" target="_blank" class="data-link-card">
+          <span class="data-link-icon">⚡</span>
+          <div>
+            <div class="data-link-name">Queues Databricks</div>
+            <div class="data-link-desc">Google Sheets · Mapeamento de queues NuCel</div>
+          </div>
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/1PyAXQItXZk7pXWu6QpqG9wa_xEQrsk86o2o5RhB6t6c" target="_blank" class="data-link-card">
+          <span class="data-link-icon">👥</span>
+          <div>
+            <div class="data-link-name">BD NuCel (Time)</div>
+            <div class="data-link-desc">Google Sheets · Membros e estrutura do time</div>
+          </div>
+        </a>
+        <a href="https://miro.com/app/board/uXjVGQaBlAk=/" target="_blank" class="data-link-card">
+          <span class="data-link-icon">🎩</span>
+          <div>
+            <div class="data-link-name">Chapéus / Setores</div>
+            <div class="data-link-desc">Miro · Mapeamento de chapéus e setores</div>
+          </div>
+        </a>
+      </div>
+
+      <div style="margin-top:28px;">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🗄️ Tabelas Databricks (cx_golden_layer)</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Tabela</th><th>Uso</th><th>Filtros fixos</th></tr></thead>
+              <tbody>
+                <tr><td><code>usr.cx_golden_layer.sla_wt</code></td><td>SLA</td><td rowspan="6" style="color:var(--text-3);font-size:12px;">spoke = nucel<br>channel IN (...)<br>tier NOT IN (UV, HIGH_INCOME)</td></tr>
+                <tr><td><code>usr.cx_golden_layer.interaction_statuses</code></td><td>Handover / Status</td></tr>
+                <tr><td><code>usr.cx_golden_layer.tnps_resolutivity</code></td><td>tNPS</td></tr>
+                <tr><td><code>usr.cx_golden_layer.jobs_done</code></td><td>Produtividade</td></tr>
+                <tr><td><code>usr.cx_golden_layer.jobs_created</code></td><td>Volume</td></tr>
+                <tr><td><code>usr.cx_golden_layer.ofrt_otd</code></td><td>OTD 24h</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── ORGANOGRAMA ──────────────────────────────────────────────── -->
+    <div id="page-organograma" class="page">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Organograma NuCel</div>
+          <div class="section-sub">Estrutura do time — abre no Miro</div>
+        </div>
+        <a href="https://miro.com/app/board/uXjVGtSfUsM=/" target="_blank" class="btn btn-secondary">↗ Abrir no Miro</a>
+      </div>
+      <div class="miro-embed">
+        <iframe
+          src="https://miro.com/app/embed/uXjVGtSfUsM=/?pres=1&frameId=3458764527730566716"
+          frameborder="0"
+          scrolling="no"
+          allow="fullscreen; clipboard-read; clipboard-write"
+          allowfullscreen
+          width="100%"
+          height="600">
+        </iframe>
+      </div>
+    </div>
+
+  </div><!-- /page-content -->
+</main>
+
+<!-- ═══ MODAL — ONE-PAGER ═══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="projetoModal" onclick="closeModal(event)">
+  <div class="modal" id="modalContent">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modalTitulo">—</div>
+        <div class="modal-badges" id="modalBadges"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid" id="modalGrid"></div>
+      <div id="modalMetrica"></div>
+      <div id="modalIntegrantes"></div>
+      <div class="chart-wrap"><canvas id="modalChart"></canvas></div>
+      <div class="modal-actions" id="modalActions"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL — BOAS-VINDAS ═════════════════════════════════════════════ -->
+<div class="modal-overlay" id="welcomeModal">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-body">
+      <div class="welcome-modal">
+        <div class="welcome-logo">👋</div>
+        <div class="welcome-title">Bem-vindo ao NuCel Pro Tracker</div>
+        <div class="welcome-sub">Identifique-se para personalizar a experiência</div>
+        <div class="welcome-select-wrap">
+          <select id="welcomeSelect" style="width:100%">
+            <option value="">Selecione seu nome...</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="saveUser()">
+          Entrar no Portal
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOAST CONTAINER ═══════════════════════════════════════════════════ -->
+<div id="toast-container"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
