@@ -598,7 +598,7 @@ async function loadChartData(p) {
       body: JSON.stringify({ table: p.db_table, queue: p.queue, channels: p.channels || [], weeks: 8 })
     });
     const data = await r.json();
-    const rows = (data.rows || data.mock && getMockChartData(p)) || [];
+    const rows = data.mock ? getMockChartData(p) : (data.rows || []);  // BUG 6 FIX
     $("chart-loading") && ($("chart-loading").style.display = "none");
     renderChart(p.id, rows.map(row => ({
       semana: new Date(row.semana).toLocaleDateString("pt-BR", { day:"2-digit", month:"2-digit" }),
@@ -766,6 +766,9 @@ function sv(e) {
   $("formNovo").reset();
   document.querySelectorAll("#qc .CH.on").forEach(x => x.classList.remove("on"));
   $("volume-row").style.display = "none";
+  $("drive-suggestions").style.display = "none";     // BUG 8 FIX: reseta sugestões
+  $("drive-docs").style.display = "none";
+  renderIntegrantesSearch("");                        // BUG 8 FIX: reseta checkboxes
 }
 
 function closeMo() {
@@ -781,13 +784,26 @@ function renderIntegrantesSearch(q) {
     : MEMBROS_NUCEL;
   const container = $("integrantes-list");
   if (!container) return;
+  // Preserve current checked state
+  const checked = new Set(
+    Array.from(document.querySelectorAll("#integrantes-list input:checked")).map(i => i.value)
+  );
   container.innerHTML = filtered.map(m =>
-    `<label class="INT-ITEM">
-       <input type="checkbox" value="${m.email}" data-nome="${m.nome}">
-       <span>${m.nome}</span>
-       <span style="font-size:10px;color:var(--i3);margin-left:auto">${m.email.split("@")[0]}</span>
+    `<label style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;cursor:pointer;transition:background .12s;${checked.has(m.email) ? 'background:var(--nubg)' : ''}">
+       <input type="checkbox" value="${m.email}" data-nome="${m.nome}" ${checked.has(m.email) ? 'checked' : ''}
+         style="width:15px;height:15px;accent-color:var(--nu);flex-shrink:0;cursor:pointer">
+       <span style="font-size:12px;font-weight:500;color:var(--ink);flex:1">${m.nome}</span>
+       <span style="font-size:10px;color:var(--i3);flex-shrink:0">${m.email.split("@")[0]}</span>
      </label>`
   ).join("");
+  // Add hover effect via event delegation
+  container.querySelectorAll("label").forEach(l => {
+    l.addEventListener("mouseenter", () => { if (!l.querySelector("input").checked) l.style.background = "var(--s2)"; });
+    l.addEventListener("mouseleave", () => { if (!l.querySelector("input").checked) l.style.background = ""; });
+    l.querySelector("input").addEventListener("change", e => {
+      l.style.background = e.target.checked ? "var(--nubg)" : "";
+    });
+  });
 }
 
 function getSelectedIntegrantes() {

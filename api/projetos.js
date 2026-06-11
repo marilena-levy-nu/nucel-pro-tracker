@@ -75,7 +75,7 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     const p = req.body;
-    await fetch(`${base}/values/Projetos!A:U:append?valueInputOption=USER_ENTERED`, {
+    await fetch(`${base}/values/Projetos!A1:append?valueInputOption=USER_ENTERED`  // BUG 10 FIX, {
       method: "POST", headers: { ...auth, "Content-Type": "application/json" },
       body: JSON.stringify({ values: [[
         p.id, p.title, p.meta, p.lider, p.cluster,
@@ -87,7 +87,7 @@ export default async function handler(req, res) {
     });
     if (process.env.SHEET_AUDIT_ID) {
       const auditBase = `https://sheets.googleapis.com/v4/spreadsheets/${process.env.SHEET_AUDIT_ID}`;
-      await fetch(`${auditBase}/values/Log!A:G:append?valueInputOption=USER_ENTERED`, {
+      await fetch(`${auditBase}/values/Log!A1:append?valueInputOption=USER_ENTERED`  // BUG 10 FIX, {
         method: "POST", headers: { ...auth, "Content-Type": "application/json" },
         body: JSON.stringify({ values: [[new Date().toLocaleDateString("pt-BR"), "Portal", "CREATE", p.id, p.title, p.lider, p.status]] })
       });

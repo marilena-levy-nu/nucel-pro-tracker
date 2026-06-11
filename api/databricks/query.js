@@ -9,12 +9,27 @@ const DATABRICKS_HOST  = process.env.DATABRICKS_HOST;
 const DATABRICKS_TOKEN = process.env.DATABRICKS_TOKEN;
 
 // Filtros base sempre fixos para NuCel
+// BUG 11 FIX: sanitiza inputs para evitar SQL injection
+function sanitize(s) { return String(s || "").replace(/['"\\;]/g, ""); }
+
+const VALID_CHANNELS = new Set(["backoffice","chat","telefone"]);
+const VALID_QUEUES   = new Set([
+  "nucel-bug","nucel-calls-issues","nucel-no-signal","nucel-internet-issues",
+  "nucel-sms-issues","nucel-esim","nucel-psim","nucel-portability","nucel-status",
+  "nucel-reembolso","nucel-turbo-box","nucel-transferencia","nucel-bonus-issues",
+  "nucel-recovery","nucel-pin-puk","nucel-imei-block","nucel-imei-unblock",
+  "nucel-immediate-cancellation","nucel-usage","nucel-psim-delivery",
+  "nucel-delivery-problems","nucel-delivery-apology","rpi-nucel","rpi-nucel-transfer",
+  "nucel-waitlist","nucel-protocols"
+]);
+
 function baseFilters(queue, channels) {
-  const queueFilter    = queue && queue !== "todos"
-    ? `AND queue_name = '${queue}'` : "";
-  const channelList    = (channels && channels.length > 0)
-    ? channels.map(c => `'${c}'`).join(",")
+  const safeChannels = (channels || []).filter(c => VALID_CHANNELS.has(c));
+  const channelList  = safeChannels.length > 0
+    ? safeChannels.map(c => `'${c}'`).join(",")
     : "'backoffice','chat','telefone'";
+  const queueFilter  = queue && VALID_QUEUES.has(queue)
+    ? `AND queue_name = '${queue}'` : "";
   return `
     AND spoke = 'nucel'
     AND channel IN (${channelList})
