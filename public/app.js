@@ -278,8 +278,28 @@ async function notifySlack(type,projeto){try{await fetch("/api/notify",{method:"
 // ─────────────────────────────────────────────────────────────
 // 12. GOOGLE SHEETS
 // ─────────────────────────────────────────────────────────────
-async function loadProjetos(){try{const r=await fetch("/api/projetos");if(!r.ok)return;const data=await r.json();if(Array.isArray(data)&&data.length>0){PROJETOS=data;buildLiderSubmenu();renderExec();renderProjetos();updateKPIs();}}catch{console.log("Sheets offline");}}
-async function saveToSheets(p){try{await fetch("/api/projetos",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(p)});}catch{}}
+async function loadProjetos(){
+  try{
+    const r=await fetch("/api/projetos");
+    if(!r.ok)return;
+    const data=await r.json();
+    if(Array.isArray(data)&&data.length>0){
+      PROJETOS=data;
+      buildLiderSubmenu();
+      renderExec();
+      renderProjetos();
+      updateKPIs();
+      console.log("✅ "+data.length+" projetos carregados da planilha");
+    }
+  }catch{console.log("Sheets offline — dados locais");}
+}
+async function saveToSheets(p){
+  try{
+    const r=await fetch("/api/projetos",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(p)});
+    if(r.ok) showToast("✅ Projeto salvo na planilha");
+    else console.warn("Sheets save failed:",r.status);
+  }catch(e){console.log("Sheets offline:",e.message);}
+}
 
 // ─────────────────────────────────────────────────────────────
 // 13. TEMA
@@ -293,7 +313,22 @@ function getUserData(){try{const d=localStorage.getItem("nucel_user");return d?J
 function setUserData(nome,email){try{localStorage.setItem("nucel_user",JSON.stringify({nome,email}));}catch{}}
 function renderUserFooter(nome){const ne=$("uf-name"),ae=$("uf-avatar");if(!ne)return;const p=nome.trim().split(" "),in2=(p[0][0]+(p[p.length-1][0]||"")).toUpperCase();ne.textContent=nome;if(ae)ae.textContent=in2;}
 function populateWelcomeDropdown(){const sel=$("welcome-select");if(!sel)return;sel.innerHTML=`<option value="">Selecionar meu nome...</option>`+MEMBROS_NUCEL.map(m=>`<option value="${m.email}" data-nome="${m.nome}">${m.nome}</option>`).join("");}
-function confirmWelcome(){const sel=$("welcome-select");if(!sel||!sel.value){if(sel){sel.style.borderColor="#ff4d6d";setTimeout(()=>sel.style.borderColor="",1500);}return;}const opt=sel.options[sel.selectedIndex],nome=opt.getAttribute("data-nome");setUserData(nome,opt.value);renderUserFooter(nome);const ws=$("welcome-screen");if(ws)ws.style.display="none";}
+function confirmWelcome(){
+  const sel=$("welcome-select");
+  if(!sel||!sel.value){
+    if(sel){sel.style.borderColor="#ff4d6d";setTimeout(()=>sel.style.borderColor="",1500);}
+    return;
+  }
+  const opt=sel.options[sel.selectedIndex];
+  const nome=opt.getAttribute("data-nome");
+  const email=opt.value;
+  if(!nome){return;}
+  setUserData(nome,email);
+  renderUserFooter(nome);
+  const ws=$("welcome-screen");
+  if(ws){ws.style.display="none";}
+  showToast("👋 Olá, "+nome.split(" ")[0]+"!");
+}
 function showChangeUser(){populateWelcomeDropdown();const user=getUserData(),sel=$("welcome-select");if(user&&sel)sel.value=user.email;const ws=$("welcome-screen");if(ws){ws.style.display="flex";ws.style.alignItems="center";ws.style.justifyContent="center";}}
 function initUser(){const user=getUserData(),ws=$("welcome-screen");if(!user){populateWelcomeDropdown();if(ws){ws.style.display="flex";ws.style.alignItems="center";ws.style.justifyContent="center";}}else{if(ws)ws.style.display="none";renderUserFooter(user.nome);}}
 
